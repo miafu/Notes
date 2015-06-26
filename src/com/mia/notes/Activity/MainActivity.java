@@ -2,6 +2,8 @@ package com.mia.notes.Activity;
 
 import java.util.ArrayList;
 
+
+
 import com.mia.notes.R;
 import com.mia.notes.R.id;
 import com.mia.notes.R.layout;
@@ -22,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CheckBox;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -30,7 +33,9 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	private ImageView addNote;
 	private ImageView delNote;
+	private ImageView showNote;
 	private TextView titleNote;
+	private GridView noteGridView;
 	private CheckBox checkBox;
 	private ListView noteListView;
 	private ArrayList<Note> notes;
@@ -43,7 +48,6 @@ public class MainActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
 		mNoteDao = new NoteDao(new DatabaseHelper(this, Constants.DBNAME));
 		notes = mNoteDao.queryAll();
 		findViews();
@@ -55,6 +59,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		titleNote = (TextView) findViewById(R.id.tv_title);
 		addNote = (ImageView) findViewById(R.id.iv_addnote);
 		delNote = (ImageView) findViewById(R.id.iv_delnote);
+		showNote = (ImageView) findViewById(R.id.iv_shownote);
+		noteGridView = (GridView) findViewById(R.id.gv_notegrid);
 		noteListView = (ListView) findViewById(R.id.lv_notelist);
 		checkBox = (CheckBox) findViewById(R.id.cb_item_note);
 		mAdapter = new NoteListAdapter(this, notes);
@@ -124,21 +130,10 @@ public class MainActivity extends Activity implements OnClickListener {
 		case R.id.iv_delnote:
 			break;
 		}
+		case R.id.iv_shownote:
+			if(1){}
+			break;
 	}
-
-	// static boolean isLongPressed(float lastX, float lastY, float thisX,
-	// float thisY, long lastDownTime, long thisEventTime, long PressTime,
-	// long longPressTime) {
-	//
-	// float offsetX = Math.abs(thisX - lastX);
-	// float offsetY = Math.abs(thisY - lastY);
-	// long intervalTime = thisEventTime - lastDownTime;
-	//
-	// if (offsetX <= 10 && offsetY <= 10 && intervalTime >= longPressTime) {
-	// return true;
-	// }
-	// return false;
-	// }
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

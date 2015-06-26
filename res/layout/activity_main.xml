@@ -48,7 +48,8 @@
             android:layout_height="@dimen/title_height_50dp"
             android:layout_toLeftOf="@id/iv_delnote"
             android:padding="12dp"
-            android:src="@drawable/grid_show_note" />
+            android:src="@drawable/list_show_note"
+            />
 
         <ImageView
             android:id="@+id/iv_addnote"
@@ -69,5 +70,15 @@
         android:dividerHeight="1dp"
         android:scrollbars="none" 
         android:cacheColorHint="@color/transparent"/>
+    
+    <GridView 
+        android:id="@+id/gv_notegrid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="3"
+        android:horizontalSpacing="10dp"
+        android:verticalSpacing="10dp"
+        android:stretchMode="none"
+        />
 
 </LinearLayout>
