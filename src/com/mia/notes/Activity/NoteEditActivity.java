@@ -16,11 +16,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class NoteEditActivity extends Activity implements OnClickListener {
 
 	private ImageView saveNote;
 	private ImageView delNote;
+	private TextView titleView;
 	private EditText noteEdit;
 	private SQLiteDatabase db;
 	private String detail;
@@ -45,6 +47,7 @@ public class NoteEditActivity extends Activity implements OnClickListener {
 		saveNote = (ImageView) findViewById(R.id.iv_savenote);
 		delNote = (ImageView) findViewById(R.id.iv_delnote);
 		noteEdit = (EditText) findViewById(R.id.tv_note_edit);
+		titleView = (TextView) findViewById(R.id.tv_title);
 	}
 
 	public void onBindListener() {
@@ -57,6 +60,11 @@ public class NoteEditActivity extends Activity implements OnClickListener {
 		detail = intent.getStringExtra("subNote").toString();
 		if (!detail.equals("new")) {
 			noteEdit.setText(detail.toCharArray(), 0, detail.length());
+			if( detail.length() <= 3 ){
+				titleView.setText(detail);
+			}else{
+				titleView.setText(detail.substring(0, 3).concat("..."));
+			}
 		}
 	}
 

@@ -23,7 +23,7 @@
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:layout_toRightOf="@id/iv_title_icon"
-        android:text="Notes()"
+        android:text="Notes"
         android:textColor="@color/title_text_color"
         android:textSize="18sp"
         />
