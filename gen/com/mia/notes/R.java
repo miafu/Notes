@@ -13,10 +13,11 @@ public final class R {
     public static final class color {
         public static final int bg_color=0x7f040002;
         public static final int gray=0x7f040000;
+        public static final int grid_item_bg=0x7f040006;
         public static final int note_edit_bg=0x7f040005;
         public static final int title_bg=0x7f040003;
         public static final int title_text_color=0x7f040004;
-        public static final int transparent=0x7f040006;
+        public static final int transparent=0x7f040007;
         public static final int white=0x7f040001;
     }
     public static final class dimen {
@@ -41,21 +42,24 @@ public final class R {
         public static final int title_icon_new=0x7f020009;
     }
     public static final class id {
-        public static final int cb_item_note=0x7f070007;
-        public static final int gv_notegrid=0x7f070006;
-        public static final int iv_addnote=0x7f070004;
+        public static final int cb_item_note=0x7f070009;
+        public static final int gv_notegrid=0x7f070007;
+        public static final int iv_addnote=0x7f070005;
         public static final int iv_delnote=0x7f070002;
-        public static final int iv_savenote=0x7f070008;
-        public static final int iv_shownote=0x7f070003;
+        public static final int iv_gridshownote=0x7f070004;
+        public static final int iv_listshownote=0x7f070003;
+        public static final int iv_savenote=0x7f07000a;
         public static final int iv_title_icon=0x7f070000;
-        public static final int lv_notelist=0x7f070005;
-        public static final int tv_note_edit=0x7f070009;
+        public static final int lv_notelist=0x7f070006;
+        public static final int tv_grid_item=0x7f070008;
+        public static final int tv_note_edit=0x7f07000b;
         public static final int tv_title=0x7f070001;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int item_list_note=0x7f030001;
-        public static final int note_edit=0x7f030002;
+        public static final int item_grid_note=0x7f030001;
+        public static final int item_list_note=0x7f030002;
+        public static final int note_edit=0x7f030003;
     }
     public static final class string {
         public static final int action_settings=0x7f060002;
