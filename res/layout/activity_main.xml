@@ -43,20 +43,30 @@
             android:src="@drawable/del_note_icon" />
 
         <ImageView
-            android:id="@+id/iv_shownote"
+            android:id="@+id/iv_listshownote"
             android:layout_width="@dimen/title_height_50dp"
             android:layout_height="@dimen/title_height_50dp"
             android:layout_toLeftOf="@id/iv_delnote"
+            android:background="@drawable/btn_bg_selector"
             android:padding="12dp"
-            android:src="@drawable/list_show_note"
-            />
+            android:src="@drawable/list_show_note" />
+
+        <ImageView
+            android:id="@+id/iv_gridshownote"
+            android:layout_width="@dimen/title_height_50dp"
+            android:layout_height="@dimen/title_height_50dp"
+            android:layout_toLeftOf="@id/iv_delnote"
+            android:background="@drawable/btn_bg_selector"
+            android:padding="12dp"
+            android:src="@drawable/grid_show_note"
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/iv_addnote"
             android:layout_width="@dimen/title_height_50dp"
             android:layout_height="@dimen/title_height_50dp"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/iv_shownote"
+            android:layout_toLeftOf="@id/iv_listshownote"
             android:background="@drawable/btn_bg_selector"
             android:padding="12dp"
             android:src="@drawable/add_note_icon" />
@@ -66,19 +76,20 @@
         android:id="@+id/lv_notelist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:cacheColorHint="@color/transparent"
         android:divider="@color/white"
         android:dividerHeight="1dp"
-        android:scrollbars="none" 
-        android:cacheColorHint="@color/transparent"/>
-    
-    <GridView 
+        android:scrollbars="none" />
+
+    <GridView
+        android:padding="10dp"
         android:id="@+id/gv_notegrid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="3"
         android:horizontalSpacing="10dp"
+        android:numColumns="3"
         android:verticalSpacing="10dp"
-        android:stretchMode="none"
-        />
+        android:visibility="gone"
+        android:scrollbars="none" />
 
 </LinearLayout>

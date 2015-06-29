@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/iv_title_icon"
-            android:text="Notes(0)"
+            android:text="New"
             android:textColor="@color/title_text_color"
             android:textSize="18sp" />
 

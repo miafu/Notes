@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 
 
+
 import com.mia.notes.R;
 import com.mia.notes.R.id;
 import com.mia.notes.R.layout;
+import com.mia.notes.adapter.NoteGridAdapter;
 import com.mia.notes.adapter.NoteListAdapter;
 import com.mia.notes.common.Note;
 import com.mia.notes.database.DatabaseHelper;
@@ -31,18 +33,20 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnClickListener {
 
+	boolean flag = true;
 	private ImageView addNote;
 	private ImageView delNote;
-	private ImageView showNote;
+	private ImageView listShowNote;
+	private ImageView gridShowNote;
 	private TextView titleNote;
 	private GridView noteGridView;
-	private CheckBox checkBox;
 	private ListView noteListView;
+	private CheckBox checkBox;
 	private ArrayList<Note> notes;
 	private NoteDao mNoteDao;
 	private static final int REQUEST_CODE_ADD = 0;
-
 	private NoteListAdapter mAdapter;
+	private NoteGridAdapter gAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +63,21 @@ public class MainActivity extends Activity implements OnClickListener {
 		titleNote = (TextView) findViewById(R.id.tv_title);
 		addNote = (ImageView) findViewById(R.id.iv_addnote);
 		delNote = (ImageView) findViewById(R.id.iv_delnote);
-		showNote = (ImageView) findViewById(R.id.iv_shownote);
-		noteGridView = (GridView) findViewById(R.id.gv_notegrid);
+		
+		listShowNote = (ImageView) findViewById(R.id.iv_listshownote);
+		gridShowNote = (ImageView) findViewById(R.id.iv_gridshownote);
+		
 		noteListView = (ListView) findViewById(R.id.lv_notelist);
+		noteGridView = (GridView) findViewById(R.id.gv_notegrid);
+		
 		checkBox = (CheckBox) findViewById(R.id.cb_item_note);
+		
 		mAdapter = new NoteListAdapter(this, notes);
+		gAdapter = new NoteGridAdapter(this, notes);
+		
 		noteListView.setAdapter(mAdapter);
-
+		noteGridView.setAdapter(gAdapter);
+		
 		noteListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -87,35 +99,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		addNote.setOnClickListener(this);
 		delNote.setOnClickListener(this);
 
-		noteListView.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				if(view.getId() == R.id.cb_item_note)
-					return true;
-				return false;
-//				switch (view.getId()) {
-//				case R.id.cb_item_note:
-//					checkBox.setVisibility(View.VISIBLE);
-//					return false;
-//				}
-//				return false;
-			}
-		});
-		
-//		noteListView.setOnLongClickListener(new OnLongClickListener() {
-//			
-//			@Override
-//			public boolean onLongClick(View v) {
-//				switch (v.getId()) {
-//				case R.id.cb_item_note:
-//					checkBox.setVisibility(View.VISIBLE);
-//					return false;
-//				}
-//				return false;
-//			}
-//		});
+		listShowNote.setOnClickListener(this);
+		gridShowNote.setOnClickListener(this);		
 	}
 
 	@Override
@@ -129,10 +114,18 @@ public class MainActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.iv_delnote:
 			break;
-		}
-		case R.id.iv_shownote:
-			if(1){}
+		case R.id.iv_listshownote:
+			gridShowNote.setVisibility(View.VISIBLE);
+			listShowNote.setVisibility(View.INVISIBLE);
+			noteGridView.setVisibility(View.VISIBLE);
+			noteListView.setVisibility(View.GONE);
 			break;
+		case R.id.iv_gridshownote:
+			gridShowNote.setVisibility(View.INVISIBLE);
+			listShowNote.setVisibility(View.VISIBLE);
+			noteGridView.setVisibility(View.GONE);
+			noteListView.setVisibility(View.VISIBLE);
+		}
 	}
 
 	@Override
@@ -146,6 +139,7 @@ public class MainActivity extends Activity implements OnClickListener {
 					notes.addAll(mNoteDao.queryAll());
 					titleNote.setText("Note(" + notes.size() + ")");
 					mAdapter.notifyDataSetChanged();
+					gAdapter.notifyDataSetChanged();
 				}
 			}
 		}
