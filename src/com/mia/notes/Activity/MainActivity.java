@@ -77,6 +77,16 @@ public class MainActivity extends Activity implements OnClickListener {
 		
 		noteListView.setAdapter(mAdapter);
 		noteGridView.setAdapter(gAdapter);
+			
+	}
+
+	public void setListener() {
+
+		addNote.setOnClickListener(this);
+		delNote.setOnClickListener(this);
+
+		listShowNote.setOnClickListener(this);
+		gridShowNote.setOnClickListener(this);	
 		
 		noteListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -92,15 +102,24 @@ public class MainActivity extends Activity implements OnClickListener {
 				startActivityForResult(intent, REQUEST_CODE_ADD);
 			}
 		});
-	}
+		
+		
+		noteGridView.setOnItemClickListener(new OnItemClickListener() {
 
-	public void setListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				String detail = notes.get(position).getDetial().toString();
+				int ID = notes.get(position).getId();
+				Intent intent = new Intent();
+				intent.putExtra("subNote", detail);
+				intent.putExtra("ID", ID);
+				intent.setClass(MainActivity.this, NoteEditActivity.class);
+				startActivityForResult(intent, REQUEST_CODE_ADD);
+			}
+			
+		});
 
-		addNote.setOnClickListener(this);
-		delNote.setOnClickListener(this);
-
-		listShowNote.setOnClickListener(this);
-		gridShowNote.setOnClickListener(this);		
 	}
 
 	@Override
