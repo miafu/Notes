@@ -33,7 +33,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnClickListener {
 
-	boolean flag = true;
+	private boolean flag = false;
 	private ImageView addNote;
 	private ImageView delNote;
 	private ImageView listShowNote;
@@ -48,6 +48,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private NoteListAdapter mAdapter;
 	private NoteGridAdapter gAdapter;
 
+	//继承Activity类必须重写的方法
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,6 +60,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		setListener();
 	}
 
+	//通过控件ID获得控件
 	public void findViews() {
 		titleNote = (TextView) findViewById(R.id.tv_title);
 		addNote = (ImageView) findViewById(R.id.iv_addnote);
@@ -72,7 +74,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		
 		checkBox = (CheckBox) findViewById(R.id.cb_item_note);
 		
-		mAdapter = new NoteListAdapter(this, notes);
+		mAdapter = new NoteListAdapter(this, notes,flag);
 		gAdapter = new NoteGridAdapter(this, notes);
 		
 		noteListView.setAdapter(mAdapter);
@@ -80,6 +82,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			
 	}
 
+	//设置按钮、item、长按事件的监听
 	public void setListener() {
 
 		addNote.setOnClickListener(this);
@@ -117,11 +120,35 @@ public class MainActivity extends Activity implements OnClickListener {
 				intent.setClass(MainActivity.this, NoteEditActivity.class);
 				startActivityForResult(intent, REQUEST_CODE_ADD);
 			}
-			
 		});
+		
+		noteListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				flag = true;
+				mAdapter.setFlag(flag);
+				mAdapter.notifyDataSetChanged();
+				return true;
+			}
+		});
 	}
 
+	//长按后出现checkBox，监听系统返回按钮
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_BACK && flag == true){
+			System.out.println("flag");
+			flag = false;
+			mAdapter.setFlag(flag);
+			mAdapter.notifyDataSetChanged();
+			return false;
+		}
+        return super.onKeyDown(keyCode, event); 
+	}
+
+	//监听listview界面 增加、不同展示方式、删除按钮的监听
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -147,6 +174,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 	}
 
+	//startActivityForResult()方法在接收setResult()返回结果时自动调用，刷新ListView/GridView界面
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
