@@ -47,7 +47,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private static final int REQUEST_CODE_ADD = 0;
 	private NoteListAdapter mAdapter;
 	private NoteGridAdapter gAdapter;
-
+	private int itemID;
 	//继承Activity类必须重写的方法
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +128,12 @@ public class MainActivity extends Activity implements OnClickListener {
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				flag = true;
+				System.out.println( notes.get(position).getId() );
+				
 				mAdapter.setFlag(flag);
+				//获取长按Item的ID
+				itemID= notes.get(position).getId();
+				mAdapter.setItemID(itemID);
 				mAdapter.notifyDataSetChanged();
 				return true;
 			}

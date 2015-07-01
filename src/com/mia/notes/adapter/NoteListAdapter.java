@@ -18,7 +18,16 @@ public class NoteListAdapter extends BaseAdapter
 	private Context mContext;
 	private ArrayList<Note> notes;
 	private Boolean flag = true;
+	private int itemID;
 	
+	public int getItemID() {
+		return itemID;
+	}
+
+	public void setItemID(int itemID) {
+		this.itemID = itemID;
+	}
+
 	public NoteListAdapter(Context mContext, ArrayList<Note> notes,Boolean flag) 
 	{
 		this.mContext = mContext;
@@ -63,6 +72,10 @@ public class NoteListAdapter extends BaseAdapter
 		Note note = (Note) getItem(position);
 		if(flag){
 			cbNoteItem.setVisibility(View.VISIBLE);
+//			cbNoteItem.setChecked(true);
+			if(getItemId(position) == itemID){
+				cbNoteItem.setChecked(true);
+			}
 		}else{
 			cbNoteItem.setVisibility(View.GONE);
 		}
