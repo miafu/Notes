@@ -1,10 +1,7 @@
 package com.mia.notes.Activity;
 
 import java.util.ArrayList;
-
-
-
-
+import com.mia.notes.common.ViewHolder;
 import com.mia.notes.R;
 import com.mia.notes.R.id;
 import com.mia.notes.R.layout;
@@ -26,6 +23,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -33,7 +32,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnClickListener {
 
-	private boolean flag = false;
+	private boolean longPressFlag = false;
 	private ImageView addNote;
 	private ImageView delNote;
 	private ImageView listShowNote;
@@ -74,7 +73,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		
 		checkBox = (CheckBox) findViewById(R.id.cb_item_note);
 		
-		mAdapter = new NoteListAdapter(this, notes,flag);
+		mAdapter = new NoteListAdapter(this, notes,longPressFlag);
 		gAdapter = new NoteGridAdapter(this, notes);
 		
 		noteListView.setAdapter(mAdapter);
@@ -95,14 +94,23 @@ public class MainActivity extends Activity implements OnClickListener {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				String detail = notes.get(position).getDetial().toString();
-				int ID = notes.get(position).getId();
-				System.out.println("Click List send ID:" + ID);
-				Intent intent = new Intent();
-				intent.putExtra("subNote", detail);
-				intent.putExtra("ID", ID);
-				intent.setClass(MainActivity.this, NoteEditActivity.class);
-				startActivityForResult(intent, REQUEST_CODE_ADD);
+				itemID = notes.get(position).getId();
+				System.out.println("ListShow flag is:" + longPressFlag);
+				if(longPressFlag){
+					
+					ViewHolder holder = (ViewHolder) view.getTag();
+					holder.cbNoteItem.toggle();
+					mAdapter.isSelected.put(position,holder.cbNoteItem.isChecked());
+					mAdapter.notifyDataSetChanged();
+				
+				}else{
+					String detail = notes.get(position).getDetial().toString();
+					Intent intent = new Intent();
+					intent.putExtra("subNote", detail);
+					intent.putExtra("ID", itemID);
+					intent.setClass(MainActivity.this, NoteEditActivity.class);
+					startActivityForResult(intent, REQUEST_CODE_ADD);
+				}
 			}
 		});
 		
@@ -112,11 +120,12 @@ public class MainActivity extends Activity implements OnClickListener {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				itemID = notes.get(position).getId();
+				System.out.println("GridShow flag is:" + longPressFlag);
 				String detail = notes.get(position).getDetial().toString();
-				int ID = notes.get(position).getId();
 				Intent intent = new Intent();
 				intent.putExtra("subNote", detail);
-				intent.putExtra("ID", ID);
+				intent.putExtra("ID", itemID);
 				intent.setClass(MainActivity.this, NoteEditActivity.class);
 				startActivityForResult(intent, REQUEST_CODE_ADD);
 			}
@@ -127,26 +136,27 @@ public class MainActivity extends Activity implements OnClickListener {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				flag = true;
-				System.out.println( notes.get(position).getId() );
-				
-				mAdapter.setFlag(flag);
+				longPressFlag = true;
+				System.out.println("ItemLongClick: " + notes.get(position).getId() );
+				mAdapter.setFlag(longPressFlag);
 				//获取长按Item的ID
-				itemID= notes.get(position).getId();
-				mAdapter.setItemID(itemID);
+				ViewHolder holder = (ViewHolder) view.getTag();
+				holder.cbNoteItem.toggle();
+				mAdapter.isSelected.put(position,holder.cbNoteItem.isChecked());
 				mAdapter.notifyDataSetChanged();
 				return true;
 			}
 		});
+		
 	}
 
 	//长按后出现checkBox，监听系统返回按钮
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if(keyCode == KeyEvent.KEYCODE_BACK && flag == true){
+		if(keyCode == KeyEvent.KEYCODE_BACK && longPressFlag == true){
 			System.out.println("flag");
-			flag = false;
-			mAdapter.setFlag(flag);
+			longPressFlag = false;
+			mAdapter.setFlag(longPressFlag);
 			mAdapter.notifyDataSetChanged();
 			return false;
 		}
