@@ -1,6 +1,9 @@
 package com.mia.notes.Activity;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
+
 import com.mia.notes.common.ViewHolder;
 import com.mia.notes.R;
 import com.mia.notes.R.id;
@@ -157,6 +160,9 @@ public class MainActivity extends Activity implements OnClickListener {
 			System.out.println("flag");
 			longPressFlag = false;
 			mAdapter.setFlag(longPressFlag);
+			for(int i = 0;i < mAdapter.isSelected.size();i++){
+				mAdapter.isSelected.put(i, false);
+			}
 			mAdapter.notifyDataSetChanged();
 			return false;
 		}
@@ -174,6 +180,24 @@ public class MainActivity extends Activity implements OnClickListener {
 			startActivityForResult(intent, REQUEST_CODE_ADD);
 			break;
 		case R.id.iv_delnote:
+			DatabaseHelper dbHelper = new DatabaseHelper(MainActivity.this,
+					Constants.DBNAME);
+			NoteDao nd = new NoteDao(dbHelper);
+			Note note = new Note();
+			Set<Integer> positions = mAdapter.isSelected.keySet();
+			for(Iterator<Integer> i = positions.iterator();i.hasNext();){
+				int pos = i.next();
+				if( mAdapter.isSelected.get( pos ) )
+				{
+					note.setId( notes.get( pos ).getId() );
+					nd.delete(note);
+				}
+			}
+			mAdapter.isSelected.clear();
+			notes.clear();
+			notes.addAll(mNoteDao.queryAll());
+			mAdapter.notifyDataSetChanged();
+			
 			break;
 		case R.id.iv_listshownote:
 			gridShowNote.setVisibility(View.VISIBLE);

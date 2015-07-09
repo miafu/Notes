@@ -20,6 +20,7 @@ public class NoteListAdapter extends BaseAdapter
 	private Context mContext;
 	private ArrayList<Note> notes;
 	public HashMap<Integer,Boolean> isSelected;
+	public HashMap<Integer,Integer> mutilDel;
 	private Boolean flag = true;
 //	private int itemID;
 	
@@ -90,11 +91,22 @@ public class NoteListAdapter extends BaseAdapter
 		
 		if(flag){
 			holder.cbNoteItem.setVisibility(View.VISIBLE);
-			holder.cbNoteItem.setChecked(isSelected.get(position));
 			
+			Boolean selected = isSelected.get(position);
+			if ( selected == null )
+			{
+				selected = false;
+			}
+			holder.cbNoteItem.setChecked( selected );
 		}else{
+			Boolean selected = isSelected.get(position);
+			if ( selected == null )
+			{
+				selected = false;
+			}
+			holder.cbNoteItem.setChecked( selected );
 			holder.cbNoteItem.setVisibility(View.GONE);
-			holder.cbNoteItem.setChecked(false);
+//			holder.cbNoteItem.setChecked(false);
 		}	
 		return convertView;
 	}
